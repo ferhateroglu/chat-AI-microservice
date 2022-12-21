@@ -1,10 +1,11 @@
 const dotEnv = require("dotenv");
-
+const path = require("path")
 if(process.env.NODE_ENV !== "prod"){
-    const envPath = "./.env." + process.env.NODE_ENV;
+    const envPath = path.join(__dirname+ "/../../.env."+process.env.NODE_ENV);
     dotEnv.config({path: envPath})
 }else{
-    dotEnv.config();
+    const envPath = path.join(__dirname+ "/../../.env");
+    dotEnv.config({path:envPath});
 }
 
 module.exports = {

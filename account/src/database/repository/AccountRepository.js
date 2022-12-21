@@ -30,6 +30,13 @@ class AccountRepository {
             throw err
         }
     }
+    async updateUser({id,user}){
+        try{
+            return await UserModel.findByIdAndUpdate(id, {...user})
+        }catch(err){
+            throw err
+        }
+    }
 
 }
 
