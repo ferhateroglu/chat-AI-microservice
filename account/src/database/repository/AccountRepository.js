@@ -37,6 +37,14 @@ class AccountRepository {
             throw err
         }
     }
+    async deleteUser({_id}){
+        try{
+            const deletedUser = await UserModel.findByIdAndDelete(_id)
+            return deletedUser
+        }catch(err){
+            throw err
+        }
+    }
 
 }
 

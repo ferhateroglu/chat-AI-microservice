@@ -21,7 +21,7 @@ module.exports.ValidatePassword = async (
 };
 
 module.exports.GenerateSignature = async (payload) => {
-  return await jwt.sign(payload, SECRET, { expiresIn: "1d" });
+  return await jwt.sign(payload, SECRET, { expiresIn: "30d" });
 };
 module.exports.ValidateSignature = async (req) => {
   try {
@@ -56,6 +56,18 @@ module.exports.FormateData = ({data, error}) => {
     throw new Error("Data Not found!");
   }
 };
+module.exports.FormatJoiMessage = (message)=>{
+    try{
+      const regexSpace = new RegExp(" ", "g");
+      const regexApostrophe = new RegExp('"', "g");
+    
+      message = message.replace(regexSpace, "_");
+      message = message.replace(regexApostrophe, "");
+      return message.toUpperCase();
+    }catch(err){
+      throw err
+    }
+}
 
 module.exports.PublishMailEvent = async(payload) => {   
   axios.post('http://localhost:8000/mail/mailEvents', {payload})

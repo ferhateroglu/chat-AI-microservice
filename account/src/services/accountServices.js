@@ -22,7 +22,6 @@ class AccountService {
   }
 
   async login(userInputs) {
-
     const { email, password } = userInputs;
     try {
       const existingUser = await this.repository.findUser({ email });
@@ -48,7 +47,7 @@ class AccountService {
         },
       });
     } catch (err) {
-      throw err
+      throw err;
     }
   }
 
@@ -57,11 +56,12 @@ class AccountService {
 
     try {
       if (await this.emailCheck(email)) {
-        throw new APIError(
-          "message",
-          STATUS_CODES.CONFLICT,
-          "EMAIL_ALREDY_EXIST"
-        );
+        return FormateData({
+          error: {
+            statusCode: STATUS_CODES.CONFLICT,
+            message: "EMAIL_ALREDY_EXIST",
+          },
+        });
       }
       // create salt
       let salt = await GenerateSalt();
@@ -76,7 +76,7 @@ class AccountService {
         email,
         _id: existingCustomer._id,
       });
-      return FormateData({data:{ id: existingCustomer._id, token }});
+      return FormateData({ data: { id: existingCustomer._id, token } });
     } catch (err) {
       throw err;
     }
@@ -127,6 +127,18 @@ class AccountService {
         };
       }
       return { statusCode: STATUS_CODES.OK, message: "OK" };
+    } catch (err) {
+      throw err;
+    }
+  }
+  async deleteUser(_id, user) {
+    try {
+      if(user.rights.includes("ADMIN001")){
+        const user = await this.repository.deleteUser({_id})
+        return {data: user}
+      }
+      //delete
+      return { data: { statusCode: STATUS_CODES.OK, message: "OK" } };
     } catch (err) {
       throw err;
     }
