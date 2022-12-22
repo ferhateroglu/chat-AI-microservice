@@ -6,8 +6,13 @@ const {
   STATUS_CODES,
 } = require("../utils/appErrors");
 const { PublishMailEvent } = require("../utils");
-const { authMiddleware, roleMiddleware } = require("./middlewares");
+const {
+  authMiddleware,
+  roleMiddleware,
+  validationMiddleware,
+} = require("./middlewares");
 let { TIER1, TIER2, TIER3 } = require("../config/index");
+const { deleteUser } = require("../utils/validation");
 
 module.exports = (app) => {
   const service = new AccountServices();
@@ -20,26 +25,26 @@ module.exports = (app) => {
     next();
   });
 
-  app.post(
-    "/resetPassword",
-    async (req, res, next) => {
-      try {
-        const {token, newPassword} = req.body;
-        const {statusCode,message} = await service.resetPassword(token,newPassword)
-        res.status(statusCode).json({message})
-      } catch (err) {
-        next(err);
-      }
+  app.post("/resetPassword", async (req, res, next) => {
+    try {
+      const { token, newPassword } = req.body;
+      const { statusCode, message } = await service.resetPassword(
+        token,
+        newPassword
+      );
+      res.status(statusCode).json({ message });
+    } catch (err) {
+      next(err);
     }
-  );
+  });
 
   app.post("/login", async (req, res, next) => {
     try {
       const { email, password } = req.body;
-      const { data,error } = await service.login({ email, password });
-      if(error){
-        const {statusCode, message} = error
-        return res.status(statusCode).json({message});
+      const { data, error } = await service.login({ email, password });
+      if (error) {
+        const { statusCode, message } = error;
+        return res.status(statusCode).json({ message });
       }
       return res.json(data);
     } catch (err) {
@@ -56,4 +61,24 @@ module.exports = (app) => {
       next(err);
     }
   });
+
+  app.delete(
+    "/account/delete",
+    authMiddleware,
+    validationMiddleware(deleteUser),
+    async (req, res, next) => {
+      try {
+        const { _id } = req.body;
+        const {user} = req;
+        const { data, error } = await service.deleteUser(_id, user)
+        if (error) {
+          const { statusCode, message } = error;
+          res.status(statusCode).json({ message });
+        }
+        return res.json({data})
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
 };
