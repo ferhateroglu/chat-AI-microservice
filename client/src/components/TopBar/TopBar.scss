@@ -1,19 +1,20 @@
 .sidebar ~ .top-bar {
+    opacity: 0.96;
     display: flex;
     top: 0px;
-    position: absolute;
+    position: fixed;
     z-index: 2;
     left: 115px;
     width: 100%;
     color: var(--text-color);
     justify-content: space-between;
     left: 0px;
-    padding: 15px 30px 15px 130px;
+    padding: 10px 30px 10px 130px;
 
   }
   
   .top-bar {
-    background-color: #f5f5fb;
+    background-color: var(--bg-body);
     .search {
       box-shadow: rgba(130, 130, 141, 0.142) 0px 7px 29px 0px;
       border-radius: 16px;
