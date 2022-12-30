@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
-import Logo from "../../img/logo.png";
 import "./Navbar.scss";
 
 
 const Navbar = () => {
-  const { currentUser, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   const [close, setclose] = useState("close");
+  const handleLogout = ()=>{
+    logout()
+  } 
 
   const handleMouseOver = () => {
     setclose("");
@@ -67,7 +69,7 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <div className="bottom-content">
+        <div className="bottom-content" onClick={handleLogout}>
           <li className="mode nav-link">
             <a href="#">
               <i className='bx bx-log-out icon' ></i>
