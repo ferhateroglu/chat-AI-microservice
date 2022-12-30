@@ -4,13 +4,14 @@ const { APIError, BadRequestError, STATUS_CODES } = require('../../utils/appErro
 // DB operations
 
 class AccountRepository {
-    async createUser({ email, password, phone, salt }){
+    async createUser({ email, password, phone, salt,username }){
         try{
             const user = new UserModel({
                 email,
                 password,
                 salt,
                 phone,
+                username,
             })
             const userResult = await user.save();
             return userResult;

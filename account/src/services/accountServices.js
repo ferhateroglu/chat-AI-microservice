@@ -37,7 +37,7 @@ class AccountService {
             _id: existingUser._id,
             rights: existingUser.rights,
           });
-          return FormateData({ data: { id: existingUser._id, token } });
+          return FormateData({ data: { id: existingUser._id,username: existingUser.username, token } });
         }
       }
       return FormateData({
@@ -51,9 +51,7 @@ class AccountService {
     }
   }
 
-  async signUp(userInputs) {
-    const { email, password, phone } = userInputs;
-
+  async signUp({ email, password, phone, username }) {
     try {
       if (await this.emailCheck(email)) {
         return FormateData({
@@ -66,17 +64,19 @@ class AccountService {
       // create salt
       let salt = await GenerateSalt();
       let userPassword = await GeneratePassword(password, salt);
-      const existingCustomer = await this.repository.createUser({
+      const existingUser = await this.repository.createUser({
+        username,
         email,
         password: userPassword,
         phone,
         salt,
+        
       });
       const token = await GenerateSignature({
         email,
-        _id: existingCustomer._id,
+        _id: existingUser._id,
       });
-      return FormateData({ data: { id: existingCustomer._id, token } });
+      return FormateData({ data: { id: existingUser._id,username: existingUser.username, token } });
     } catch (err) {
       throw err;
     }
