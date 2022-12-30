@@ -54,8 +54,12 @@ module.exports = (app) => {
 
   app.post("/signUp", async (req, res, next) => {
     try {
-      const { email, password, phone } = req.body;
-      const { data } = await service.signUp({ email, password, phone });
+      const { email, password, phone, username } = req.body;
+      const { data, error } = await service.signUp({ email, password, phone, username });
+      if(error){
+        const {statusCode, message} = error;
+        return res.status(statusCode).json({message})
+      }
       return res.json(data);
     } catch (err) {
       next(err);
