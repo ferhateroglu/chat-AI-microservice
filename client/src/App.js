@@ -10,8 +10,6 @@ import "./style.scss"
 import { AuthContext } from "./context/authContext";
 import axios from 'axios';
 
-
-
 const Layout = () => {
   return (
     <>

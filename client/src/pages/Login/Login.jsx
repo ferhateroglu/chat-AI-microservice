@@ -53,7 +53,6 @@ const Login = () => {
           <input
             required
             type="password"
-            placeholder="password"
             name="password"
             onChange={handleChange}
             className="pas"
