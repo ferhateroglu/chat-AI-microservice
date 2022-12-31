@@ -1,0 +1,86 @@
+.card {
+    font-family: "Roboto", sans-serif;
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    .head {
+      background-color: var(--sidebar-color);
+      border-radius: 20px 20px 0 0;
+      padding: 10px 10px 0 10px;
+      img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 20px;
+        filter: blur(0.5px);
+      }
+      
+    }
+    .body {
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+      background-color: var(--sidebar-color);
+      border-radius: 0 0 20px 20px;
+      padding: 0 20px 2px 20px;
+      .row{
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 8px 0 8px;
+        .tags {
+          .tag {
+            font-family: "Roboto", sans-serif;
+            border: 1px solid var(--second-text-color);
+            font-size: 10px;
+            color: var(--second-text-color);
+            margin-right: 10px;
+            padding: 2px 4px;
+            border-radius: 20px;
+            font-weight: 500;
+          }
+        }
+        .like{
+          height: min-content;
+          i{
+            color: var(--text-color);
+            font-size: 20px;
+            &:hover{
+              color: black;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      
+
+      .title {
+        //color: var(--text-color);
+        margin-bottom: 5px;
+      }
+      .desc {
+        font-size: 14px;
+        color: var(--text-color);
+        display: inline-block;
+      }
+      .read-more {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        padding: 10px;
+        button {
+          font-family: "Roboto", sans-serif;
+          font-weight: 500;
+          background-color: var(--bg-color);
+          border: none;
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          a{
+            text-decoration: none;
+            color: var(--second-color);
+          }
+        }
+      }
+    }
+  }

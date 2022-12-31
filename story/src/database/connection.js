@@ -3,6 +3,7 @@ const {DB_URL} = require("../config");
 
 module.exports = async () => {
     try{
+        mongoose.syncIndexes();
         mongoose.set("strictQuery", false);
         await mongoose.connect(DB_URL);
         console.log("connected to mongodb")

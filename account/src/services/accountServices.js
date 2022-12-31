@@ -37,7 +37,14 @@ class AccountService {
             _id: existingUser._id,
             rights: existingUser.rights,
           });
-          return FormateData({ data: { id: existingUser._id,username: existingUser.username, token } });
+          return FormateData({
+            data: {
+              id: existingUser._id,
+              username: existingUser.username,
+              token,
+              image: existingUser.image,
+            },
+          });
         }
       }
       return FormateData({
@@ -70,13 +77,14 @@ class AccountService {
         password: userPassword,
         phone,
         salt,
-        
       });
       const token = await GenerateSignature({
         email,
         _id: existingUser._id,
       });
-      return FormateData({ data: { id: existingUser._id,username: existingUser.username, token } });
+      return FormateData({
+        data: { id: existingUser._id, username: existingUser.username, token },
+      });
     } catch (err) {
       throw err;
     }
@@ -133,11 +141,37 @@ class AccountService {
   }
   async deleteUser(_id, user) {
     try {
-      if(user.rights.includes("ADMIN001")){
-        const user = await this.repository.deleteUser({_id})
-        return {data: user}
+      if (user.rights.includes("ADMIN001")) {
+        const user = await this.repository.deleteUser({ _id });
+        return { data: user };
       }
       //delete
+      return { data: { statusCode: STATUS_CODES.OK, message: "OK" } };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async addLike({user,story}){
+    try {
+      const response = await this.repository.addLike({story, user})
+      //delete
+      if(!response){
+        return { error: { statusCode: STATUS_CODES.BAD_REQUEST, message: "BAD_REQ" } };
+      }
+      return { data: { statusCode: STATUS_CODES.OK, message: "OK" } };
+    } catch (err) {
+      throw err;
+    }
+  }
+  
+  async removeLike({user,_id}){
+    try {
+      const response = await this.repository.removeLike({_id, user})
+      //delete
+      if(!response){
+        return { error: { statusCode: STATUS_CODES.BAD_REQUEST, message: "BAD_REQ" } };
+      }
       return { data: { statusCode: STATUS_CODES.OK, message: "OK" } };
     } catch (err) {
       throw err;

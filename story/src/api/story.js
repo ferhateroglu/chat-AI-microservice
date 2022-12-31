@@ -64,7 +64,7 @@ module.exports = (app) => {
   );
 
   // upload file to s3
-  app.post("/audio", uploadS3("sound"), async (req, res, next) => {
+  app.post("/audio", uploadS3("file"), async (req, res, next) => {
     try {
       return res.send(req.file);
     } catch (err) {
@@ -113,12 +113,16 @@ module.exports = (app) => {
   );
 
   // download file with s3
-  app.get("/audio/:fileKey", authMiddleware, async (req, res, next) => {
-    const { fileKey } = req.params;
+  app.get("/file/:fileKey", async (req, res, next) => {
+    try{
+      const { fileKey } = req.params;
     const fileStream = await service.getAudio({ res, fileKey });
     fileStream.pipe(res);
+    }catch(err){
+      res.status(500).json({message:"INTERNAL_SERVER_ERROR"})
+    }
   });
-  // download file with s3
+  // delete file with s3
   app.delete(
     "/audio/:fileKey",
     authMiddleware,

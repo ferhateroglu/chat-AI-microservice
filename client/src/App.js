@@ -8,6 +8,7 @@ import {Home, Login, Register,ForgotPassword,ResetPassword, Leaderboard ,Likes,S
 import {Navbar, TopBar} from "./components";
 import "./style.scss"
 import { AuthContext } from "./context/authContext";
+import axios from 'axios';
 
 
 
@@ -21,7 +22,7 @@ const Layout = () => {
   );
 };
 
-const router = createBrowserRouter([
+const protectedRouter = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
     element: <ResetPassword />,
   },
 ]);
-const protectedRouter = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     children: [
@@ -69,37 +70,34 @@ const protectedRouter = createBrowserRouter([
         path: "/",
         element: <Login />,
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
+      },
     ],
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/leaderboard",
-    element: <Leaderboard />,
-  },
-  {
-    path: "/likes",
-    element: <Likes />,
-  },
-  {
-    path: "/story",
-    element: <Story />,
   },
 ]);
 
 function App() {
   const { currentUser } = useContext(AuthContext);
+  axios.defaults.headers.common['Authorization'] = currentUser ? ("Barear "+currentUser.token) : null;
 
   return (
     <div className="app">
       <div className="container">
-        <RouterProvider router={ currentUser ? router : protectedRouter} />
+        <RouterProvider router={ currentUser ?  protectedRouter : router} />
       </div>
     </div>
   );

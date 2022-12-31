@@ -14,4 +14,3 @@ exports.getAllStoriesScema = Joi.object().keys({
 exports.deleteStorySchema = Joi.object().keys({
   _id:  Joi.string().hex().length(24)
 })
-

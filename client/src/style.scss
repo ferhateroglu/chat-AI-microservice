@@ -35,8 +35,8 @@ $background-color_1: var(--body-color);
   --bg-color: #c5dbfd;
   --bg-color-2: #9698d6;
 
-  --bg-box-1: #c8e6fc;
-  --bg-box-2: #84c6f9;
+  --bg-box-1: #97cffb;
+  --bg-box-2: #c8e6fc;
 
   --bg-box-5: #e9e4f8;
 
@@ -65,7 +65,7 @@ $background-color_1: var(--body-color);
   box-shadow: 0 0 2em hsl(231deg 62% 94%);
 }
 body {
-  min-height: 100vh;
+  min-height: 100vh !important;
   user-select: none;
   transition: var(--tran-05);
 	background-color: #edf7ff;

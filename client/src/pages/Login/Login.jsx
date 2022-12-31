@@ -41,9 +41,8 @@ const Login = () => {
           <input
             required
             type="email"
-            placeholder="username"
             name="email"
-            placeholder="Username@gmail.com"
+            placeholder="example@mail.com"
             onChange={handleChange}
           />
         </div>

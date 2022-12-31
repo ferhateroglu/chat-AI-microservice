@@ -5,13 +5,27 @@ import axios from "axios";
 import "./Home.scss"
 import { AuthContext } from "../../context/authContext";
 
+import {Card, Slider, InfoCard} from "../../components"
+
 
 
 const Home = () => {
   const { currentUser } = useContext(AuthContext);
 
+  const getPosts = async ()=>{
+    const {data} = await axios({
+      method: "GET",
+      url: "/story",
+      validateStatus: (status) => {
+        return status < 500;
+      },
+    });
+    console.log(data);
+    setPosts(data)
+  }
+
   useEffect(()=>{
-    console.log(currentUser)
+    getPosts()
   },[])
 
   const [posts, setPosts] = useState([]);
@@ -25,191 +39,17 @@ const Home = () => {
       <div className="row">
         <div className="main-content col-8">
           <div className="row">
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-              <div className='tags'>
-                  <span className='tag'>example1</span>
-                  <span className='tag'>example2</span>
-                  <span className='tag'>tag1</span>
-                </div>
-                <div className='title'>Lorem ipsum Dolor</div>
-                <div className='desc'>Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className="read-more">
-                  <button>Read More</button>
-                </div>
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-                <div className="read-more">
-                  <button>Read More</button>
-                </div>
-
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-
-              </div>
-            </div>
-            <div className="card col-4">
-              <div className="head">
-                <img src="1.jpg" alt="" />
-              </div>
-              <div className="body">
-                <div className='title'>ornek bir story</div>
-                <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-                <div className='tags'>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                  <span className='tag'>tag1</span>
-                </div>
-
-              </div>
-            </div>
+            {posts && posts.map((post)=>(<Card key={post._id} post={post}/>))}
           </div>
         </div>
         <div className="right-content col-4">
           <div className="row">
-          <div className="card col-12">
-            <div className="head">
-              <img src="2.jpg" alt="" />
-            </div>
-            <div className="body">
-              <div className='title'>ornek bir story</div>
-              <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-              <div className="read-more">
-                  <button>Read More</button>
-                </div>
-            </div>
-          </div>
-          <div className="card col-6">
-            <div className="body">
-              <div className='title'>ornek bir story</div>
-              <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-              <div className='tags'>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-              </div>
-            </div>
-          </div>
-          <div className="card col-6">
-            <div className="body">
-              <div className='title'>ornek bir story</div>
-              <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-              <div className='tags'>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-              </div>
-            </div>
-          </div>
-          <div className="card col-6">
-            <div className="body">
-              <div className='title'>ornek bir story</div>
-              <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-              <div className='tags'>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-              </div>
-            </div>
-          </div>
-          <div className="card col-6">
-            <div className="body">
-              <div className='title'>ornek bir story</div>
-              <div className='desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, ut.</div>
-              <div className='tags'>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-                <span className='tag'>tag1</span>
-              </div>
-            </div>
-          </div>
+          <Slider/>
+          <InfoCard/>
+          <InfoCard/>
+          <InfoCard/>
+          <InfoCard/>
+
 
           </div>
         </div>

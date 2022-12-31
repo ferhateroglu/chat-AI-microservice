@@ -1,0 +1,45 @@
+.home {
+    .row {
+      .right-content {
+        .row {
+          .col-12 {
+            position: relative;
+            
+
+  
+            .head {
+              img {
+                height: 300px !important;
+              }
+              border-radius: 20px;
+            }
+            .body {
+              box-shadow: none;
+              position: absolute;
+              background-color: transparent;
+              padding: 40px;
+              color: white;
+              bottom: 0px;
+              left: 0px;
+              .desc {
+                font-size: 14px;
+              }
+              button {
+                font-family: "Roboto", sans-serif;
+                opacity: 0.7;
+  
+                font-weight: 500;
+                background-color: var(--bg-color);
+                border: none;
+                color: var(--second-color);
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }     
+    }
+  }
+  

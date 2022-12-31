@@ -22,6 +22,7 @@ export const AuthContexProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    axios.defaults.headers.common['Authorization'] = currentUser ? ("Barear "+currentUser.token) : null;
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 

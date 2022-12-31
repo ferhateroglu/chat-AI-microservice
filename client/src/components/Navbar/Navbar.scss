@@ -264,13 +264,7 @@ header {
 	}
 }
 .home {
-	position: absolute;
-	top: 0;
-	top: 0;
-	left: 250px;
-	height: 100vh;
-	width: calc(100% - 250px);
-	transition: var(--tran-05);
+	
 	.text {
 		font-size: 30px;
 		font-weight: 500;

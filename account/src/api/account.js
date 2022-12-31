@@ -55,10 +55,15 @@ module.exports = (app) => {
   app.post("/signUp", async (req, res, next) => {
     try {
       const { email, password, phone, username } = req.body;
-      const { data, error } = await service.signUp({ email, password, phone, username });
-      if(error){
-        const {statusCode, message} = error;
-        return res.status(statusCode).json({message})
+      const { data, error } = await service.signUp({
+        email,
+        password,
+        phone,
+        username,
+      });
+      if (error) {
+        const { statusCode, message } = error;
+        return res.status(statusCode).json({ message });
       }
       return res.json(data);
     } catch (err) {
@@ -66,23 +71,56 @@ module.exports = (app) => {
     }
   });
 
-  app.delete(
-    "/account/delete",
+  app.delete("/account/delete",
     authMiddleware,
     validationMiddleware(deleteUser),
     async (req, res, next) => {
       try {
         const { _id } = req.body;
-        const {user} = req;
-        const { data, error } = await service.deleteUser(_id, user)
+        const { user } = req;
+        const { data, error } = await service.deleteUser(_id, user);
         if (error) {
           const { statusCode, message } = error;
           res.status(statusCode).json({ message });
         }
-        return res.json({data})
+        return res.json({ data });
       } catch (err) {
         next(err);
       }
     }
   );
+
+  //add like
+  app.post("/like",authMiddleware, async(req,res,next) =>{
+    try {
+      const {story} = req.body;
+      const user = req.user;
+      const { data, error } = await service.addLike({user,story});
+      if (error) {
+        const { statusCode, message } = error;
+        return res.status(statusCode).json({ message });
+      }
+      const {message, statusCode} = data;
+      return res.status(statusCode).json({message});
+    } catch (err) {
+      next(err);
+    }
+  
+  })
+  app.delete("/like",authMiddleware, async(req,res,next) =>{
+    try {
+      const {_id} = req.body;
+      const user = req.user;
+      const { data, error } = await service.removeLike({user,_id});
+      if (error) {
+        const { statusCode, message } = error;
+        return res.status(statusCode).json({ message });
+      }
+      const {message, statusCode} = data;
+      return res.status(statusCode).json({message});
+    } catch (err) {
+      next(err);
+    }
+  
+  })
 };
