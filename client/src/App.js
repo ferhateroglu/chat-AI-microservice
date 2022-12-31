@@ -9,8 +9,6 @@ import {Navbar, TopBar} from "./components";
 import "./style.scss"
 import { AuthContext } from "./context/authContext";
 
-
-
 const Layout = () => {
   return (
     <>

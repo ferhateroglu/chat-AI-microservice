@@ -6,7 +6,7 @@ import "./ForgotPassword.scss";
 
 
 const ForgotPassword = ()=>{
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(""); // edit this
     const [err, setErr] = useState("");
     const navigate = useNavigate();
 
