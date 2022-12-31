@@ -1,21 +1,29 @@
-import { useContext } from 'react';
+import { useContext } from "react";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-} from "react-router-dom";
-import {Home, Login, Register,ForgotPassword,ResetPassword, Leaderboard ,Likes,Story} from "./pages";
-import {Navbar, TopBar} from "./components";
-import "./style.scss"
+  Home,
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Leaderboard,
+  Likes,
+  Story,
+  NewStory,
+} from "./pages";
+import { Navbar, TopBar } from "./components";
+import "./style.scss";
 import { AuthContext } from "./context/authContext";
-import axios from 'axios';
+import { ProtectedRoute, AdminRoute } from "./context/ProtectedRoute ";
+
+import axios from "axios";
 
 const Layout = () => {
   return (
     <>
-      <Navbar />
-      <TopBar/>
-      <Outlet />
+     <Navbar/>
+     <TopBar/>
+     <Outlet/>
     </>
   );
 };
@@ -23,11 +31,17 @@ const Layout = () => {
 const protectedRouter = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout/>
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
-        element: <Home />,
+        element:(
+           <Home />
+        ),
       },
       {
         path: "/leaderboard",
@@ -36,6 +50,15 @@ const protectedRouter = createBrowserRouter([
       {
         path: "/likes",
         element: <Likes />,
+      },
+      {
+        path: "/new-story",
+
+        element: (
+          <AdminRoute>
+            <NewStory />
+          </AdminRoute>
+        ),
       },
       {
         path: "/story/:slug",
@@ -81,21 +104,90 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-        path: "/reset-password",
+        path: "/reset-password/:token",
         element: <ResetPassword />,
       },
     ],
   },
 ]);
+const deneme = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/leaderboard",
+        element: (
+          <ProtectedRoute>
+            <Leaderboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/likes",
+        element: (
+          <ProtectedRoute>
+            <Likes />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/new-story",
+
+        element: (
+          <ProtectedRoute>
+            <AdminRoute>
+              <NewStory />
+            </AdminRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/story/:slug",
+        element: (
+          <ProtectedRoute>
+            <Story />
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+]);
 
 function App() {
   const { currentUser } = useContext(AuthContext);
-  axios.defaults.headers.common['Authorization'] = currentUser ? ("Barear "+currentUser.token) : null;
+  axios.defaults.headers.common["Authorization"] = currentUser
+    ? "Barear " + currentUser.token
+    : null;
 
   return (
-    <div className="app">
-      <div className="container">
-        <RouterProvider router={ currentUser ?  protectedRouter : router} />
+    <div className='app'>
+      <div className='container'>
+        <RouterProvider router={protectedRouter} />
       </div>
     </div>
   );

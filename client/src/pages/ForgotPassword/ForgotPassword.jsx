@@ -2,12 +2,15 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import validator from 'validator';
+
 import "./ForgotPassword.scss";
 
 
 const ForgotPassword = ()=>{
     const [email, setEmail] = useState(""); // edit this
-    const [err, setErr] = useState("");
+    const [err, setError] = useState("");
+    const [info, setInfo] = useState("");
     const navigate = useNavigate();
 
     const handleChange = (e)=>{
@@ -17,17 +20,22 @@ const ForgotPassword = ()=>{
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try {
-            const res = await axios.post("/api/auth/forgot-password", {email});
-            if(res.data.success){
-                navigate("/reset-password");
-            }
+            if (!validator.isEmail(email)) {
+                setError("Please enter a valid email address");
+                return;
+              }
+              await axios.post("/forgotPassword",{email})
+              setError("");
+              setInfo("Email sent successfully");
+            
         } catch (error) {
-            setErr(error.response.data.error);
+            setError(error.response.data.message);
+            setInfo("");
         }
     };
 
     return (
-        <div className="auth">
+        <div className="forgot-password">
             <div className="header">
             <h1>Find your account</h1>
             </div>
@@ -46,7 +54,9 @@ const ForgotPassword = ()=>{
                 </div>
 
                 <button className="change_password" onClick={handleSubmit}>Reset Password</button>
-                {err && <p>{err}</p>}
+                {err && <p className='error-message'>{err}</p>}
+                {info && <p className='info-message'>{info}</p>}
+
 
             </form>
         </div>

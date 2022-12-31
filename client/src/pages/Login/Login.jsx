@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
+import validator from 'validator';
+
+import "./Login.scss";
 
 const Login = () => {
   const [inputs, setInputs] = useState({
@@ -23,15 +26,25 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!validator.isEmail(inputs.email)) {
+        setError("Please enter a valid email address");
+        return;
+      }
+      if (inputs.password.length < 6) {
+        setError("Password must be at least 6 characters");
+        return;
+      }
       await login(inputs)
-      navigate("/");
+      setTimeout(()=>{
+        navigate("/");
+      },[200])
     } catch (err) {
       console.log(err)
       setError(err.response.data.message);
     }
   };
   return (
-    <div className="auth">
+    <div className="login">
       <div className='header'>
         <h1>Edu<span>AI</span></h1>
       </div>
@@ -61,7 +74,7 @@ const Login = () => {
       </div>
       <button  className="login" onClick={handleSubmit}>Login </button>
       <div className="footer"><Link to="/register">Sign up</Link><Link to="/forgot-password">Forgot Password?</Link></div>
-      {err && <p className='error'>{err}</p>}
+      {err && <p className='error-message'>{err}</p>}
     </div>
   );
 };

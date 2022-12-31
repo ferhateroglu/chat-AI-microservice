@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import validator from 'validator';
+
 import "./Register.scss"
 
 const Register = () => {
@@ -21,15 +23,27 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/auth/register", inputs);
+      if (inputs.username.length < 4) {
+        setError("Username must be at least 4 characters");
+        return;
+      }
+      if (!validator.isEmail(inputs.email)) {
+        setError("Please enter a valid email address");
+        return;
+      }
+      if (inputs.password.length < 6) {
+        setError("Password must be at least 6 characters");
+        return;
+      }
+      await axios.post("/signUp", inputs);
       navigate("/login");
     } catch (err) {
-      setError(err.response.data);
+      setError(err.response.data.message);
     }
   };
 
   return (
-    <div className="auth">
+    <div className="register">
       <div className="header">
         <h1>Register</h1>
       </div>
@@ -71,7 +85,7 @@ const Register = () => {
           </div>
         </div>
         <button className="btn-register" onClick={handleSubmit}>Register</button>
-        {err && <p>{err}</p>}
+        {err && <p className='error-message'>{err}</p>}
         <span className="footer">
           Do you have an account? <Link to="/login">Login</Link>
         </span>

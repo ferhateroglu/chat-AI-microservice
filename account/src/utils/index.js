@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 const { SECRET } = require("../config");
 const { APIError, STATUS_CODES } = require('./appErrors');
@@ -20,8 +21,14 @@ module.exports.ValidatePassword = async (
   return (await this.GeneratePassword(enteredPassword, salt)) === savedPassword;
 };
 
-module.exports.GenerateSignature = async (payload) => {
-  return await jwt.sign(payload, SECRET, { expiresIn: "30d" });
+module.exports.GenerateSignature = async (payload,timeOpt) => {
+  if(timeOpt){
+    return await jwt.sign(payload, SECRET, { expiresIn: timeOpt });
+
+  }else{
+    return await jwt.sign(payload, SECRET, { expiresIn: "30d" });
+
+  }
 };
 module.exports.ValidateSignature = async (req) => {
   try {
@@ -42,7 +49,6 @@ module.exports.VerifyResetToken = async (token) =>{
   try{
     return await jwt.verify(token, SECRET);
   }catch(err){
-    console.log(err)
     return null
   }
 }
@@ -70,7 +76,19 @@ module.exports.FormatJoiMessage = (message)=>{
 }
 
 module.exports.PublishMailEvent = async(payload) => {   
-  axios.post('http://localhost:8000/mail/mailEvents', {payload})
+  try{
+    axios.post('http://localhost:8080/mail/mailEvents', {payload})
+  }catch(err){
+    throw err
+  }
 }
+module.exports.PublishStoryEvent = async(payload) => {   
+  try{
+    axios.post('http://localhost:8080/story/storyEvents', {payload})
+  }catch(err){
+    throw err
+  }
+}
+
 
 

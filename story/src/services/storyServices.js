@@ -1,6 +1,6 @@
 const slugify = require("slugify");
 const { StoryRepository } = require("../database");
-const { FormateData, FormatJoiMessage } = require("../utils");
+const { FormateData, FormatJoiMessage, PublishAccountEvents  } = require("../utils");
 const {
   APIError,
   BadRequestError,
@@ -36,7 +36,7 @@ class StoryService {
   async addStory({ storyInput }) {
     try {
       storyInput.slug = slugify(storyInput.title);
-      const { title, body, slug, fileKey } = storyInput;
+      const { title, body, slug, fileKey,image } = storyInput;
       // check title or file key exist
       const isExist = await this.repository.checkStory({ title, fileKey });
       if (isExist) {
@@ -54,9 +54,9 @@ class StoryService {
       throw err;
     }
   }
-  async getStory({ slug }) {
+  async getStory({ storyId,slug }) {
     try {
-      const story = await this.repository.getStory({ slug });
+      const story = await this.repository.getStory({ storyId,slug });
       if (!story) {
         return {
           error: {
@@ -108,6 +108,45 @@ class StoryService {
       throw err;
     }
   }
+
+
+    // =================Story Events=======================
+    async sendLikeEvent ({storyId,userId}) {
+      try{
+        const {data, error} = await this.getStory({storyId})
+        if(error){
+          throw error
+        }
+        
+        const payload = {
+          event:"ADD_LIKE",
+          data:{
+            story: data,
+            userId
+          }
+        }
+        PublishAccountEvents(payload)
+        
+      }catch(err){
+        throw err
+      }
+    }
+    
+
+  async SubscribeEvents(payload) {
+    const { event, data } = payload;
+    switch (event) {
+      case "GET_STORY_BY_SLUG":
+        try{
+          const { storyId, userId } = data;
+        this.sendLikeEvent({storyId,userId})
+        }catch(err){
+          throw err
+        }
+        break;
+    }
+  }
+
 }
 
 module.exports = StoryService;

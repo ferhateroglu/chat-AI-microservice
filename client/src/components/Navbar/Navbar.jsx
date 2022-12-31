@@ -5,12 +5,12 @@ import "./Navbar.scss";
 
 
 const Navbar = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout, currentUser } = useContext(AuthContext);
 
   const [close, setclose] = useState("close");
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     logout()
-  } 
+  }
 
   const handleMouseOver = () => {
     setclose("");
@@ -41,10 +41,10 @@ const Navbar = () => {
         <div className="menu">
           <ul className="menu-links">
             <li className="nav-link">
-            <Link to="/">
-              <i className='bx bx-home-alt icon' ></i>
-                  <span className="text nav-text">Home</span>
-            </Link>
+              <Link to="/">
+                <i className='bx bx-home-alt icon' ></i>
+                <span className="text nav-text">Home</span>
+              </Link>
             </li>
 
             <li className="nav-link">
@@ -55,26 +55,32 @@ const Navbar = () => {
             </li>
 
             <li className="nav-link">
-            <Link to="/likes">
+              <Link to="/likes">
                 <i className='bx bx-heart icon' ></i>
                 <span className="text nav-text">Likes</span>
               </Link>
             </li>
 
             <li className="nav-link">
-              <a href="#">
+              <Link to="/">
                 <i className='bx bx-sun icon sun'></i>
                 <span className="text nav-text">Theme</span>
-              </a>
+              </Link>
             </li>
+            {currentUser.role === "admin" && <li className="nav-link">
+              <Link to="/new-story">
+                <i className='bx bx-plus-circle icon'></i>
+                <span className="text nav-text">New Story</span>
+              </Link>
+            </li>}
           </ul>
         </div>
         <div className="bottom-content" onClick={handleLogout}>
           <li className="mode nav-link">
-            <a href="#">
+            <Link href="/login">
               <i className='bx bx-log-out icon' ></i>
               <span className="text nav-text">Logout</span>
-            </a>
+            </Link>
           </li>
         </div>
       </div>

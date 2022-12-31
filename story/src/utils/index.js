@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const { SECRET } = require("../config");
 const { APIError, STATUS_CODES } = require('./appErrors');
+const axios = require("axios");
 
 //Utility functions
 
@@ -49,6 +50,15 @@ module.exports.FormatJoiMessage = (message)=>{
       throw err
     }
 }
+
+module.exports.PublishAccountEvents = async(payload) => {   
+  try{
+    axios.post('http://localhost:8080/accountEvents', {payload})
+  }catch(err){
+    throw err
+  }
+}
+
 
 
 

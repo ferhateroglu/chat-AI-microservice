@@ -24,6 +24,16 @@ const Home = () => {
     setPosts(data)
   }
 
+  const handleLike = async (event)=>{
+    try{
+    const storyId = event.target.getAttribute('data-key')
+    axios.post("/like",{storyId});
+    }catch(err){
+        console.log(err)
+    }
+}
+  
+
   useEffect(()=>{
     getPosts()
   },[])
@@ -39,7 +49,7 @@ const Home = () => {
       <div className="row">
         <div className="main-content col-8">
           <div className="row">
-            {posts && posts.map((post)=>(<Card key={post._id} post={post}/>))}
+            {posts && posts.map((post)=>(<Card key={post._id} handleLike={handleLike} post={post}/>))}
           </div>
         </div>
         <div className="right-content col-4">

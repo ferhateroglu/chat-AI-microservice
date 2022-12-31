@@ -1,37 +1,42 @@
+import { useState, useEffect } from 'react';
+import axios from "axios"
 import "./Leaderboard.scss"
-const Leaderboard = ()=>{
-    return (<>
-        <div class="leaderboard">
-      <div class="head">
-        <i class="fas fa-crown"></i>
+const Leaderboard = () => {
+  const [topUsers, setTopUsers] = useState();
+  useEffect(() => {
+    fetchTopUsers()
+  }, [])
+
+  const fetchTopUsers = async () => {
+    try {
+      const { data } = await axios.get("/leaderBoard");
+      setTopUsers(data);
+      console.log(topUsers)
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  return (<>
+    {topUsers && <div className="leaderboard">
+      <div className="head">
+        <i className="fas fa-crown"></i>
         <h1>Top Readers</h1>
-        <i class='bx bx-trophy'></i>
+        <i className='bx bx-trophy'></i>
       </div>
-      <div class="body">
+      <div className="body">
         <ol>
-          <li>
-            <mark>Jerry Wood</mark>
-            <small>948</small>
-          </li>
-          <li>
-            <mark>Brandon Barnes</mark>
-            <small>750</small>
-          </li>
-          <li>
-            <mark>Raymond Knight</mark>
-            <small>684</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>335</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>296</small>
-          </li>
+
+          {topUsers.map((user) => (
+            <li key={user._id}>
+              <mark>{user.username}</mark>
+              <small>{user.score}</small>
+            </li>
+          ))}
+
         </ol>
       </div>
-    </div>
-    </>)
+    </div>}
+  </>)
 }
 export default Leaderboard;

@@ -21,36 +21,29 @@ class MailService {
   constructor() {
     //this.repository = new MailRepository();
   }
-  async resetPassword(email) {
-    try {
-      // check is email exist
-      const payload = { event: "EMAIL_CHECK", data: { email } };
-      const { data } = await PublisAccountEvent(payload);
-      if (data.statusCode !== 200) {
-        return data;
-      }
-      //create token
-      const token = await GenerateSignature({                          
-        email,
-        resetPassword: true
-      });
-      //send mail logic
-      const RESET_LINK = BASE_URL + "/resetPassword/" + token;
-      await SendEmail(email, "Password reset", RESET_LINK);
 
-      return { message: "EMAIL_SENT_SUCCESSFULLY", statusCode: 200 };
+  async sendTokenMail({ email, token }) {
+    try {
+      // send mail logic
+      const RESET_LINK = "http://localhost:3000/reset-password/" + token;
+      SendEmail(email, "Password reset", RESET_LINK);
     } catch (err) {
       throw err;
     }
   }
+
   async SubscribeEvents(payload) {
     const { event, data } = payload;
 
     const { email } = data;
     switch (event) {
-      case "SEND_RESET_PASSWORD_MAIL":
-        console.log("SEND_RESET_PASSWORD_MAIL");
-        this.resetPassword(email);
+      case "SEND_TOKEN_MAIL":
+        try {
+          const { email, token } = data;
+          this.sendTokenMail({ email, token });
+        } catch (err) {
+          throw err;
+        }
         break;
     }
   }

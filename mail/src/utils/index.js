@@ -76,13 +76,12 @@ module.exports.SendEmail = async (email, subject, RESET_LINK) => {
 
     await transporter.sendMail({
       from: EMAIL,
-      to: "ferhateroglu1907@gmail.com",
+      to: email,
       subject: subject,
       text: RESET_LINK,
     });
 
-    console.log("email sent sucessfully");
   } catch (error) {
-    console.log(error, "email not sent");
+    throw error;
   }
 };

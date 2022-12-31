@@ -41,6 +41,7 @@ class StoryRepository {
         body: storyInput.body,
         slug: storyInput.slug,
         fileKey: storyInput.fileKey,
+        image: storyInput.image
       });
       return await story.save();
     } catch (err) {
@@ -51,9 +52,15 @@ class StoryRepository {
     const story = await StoryModel.findOne({ $or: [{ title }, { fileKey }] });
     return story ? true : false;
   }
-  async getStory({ slug }) {
+  async getStory({ storyId, slug }) {
     try {
-      const story = await StoryModel.findOne({ slug });
+      let story;
+      if(storyId){
+        story = await StoryModel.findById(storyId);
+      }else{
+        story = await StoryModel.findOne({slug});
+      }
+      
       return story;
     } catch (err) {
       throw err;

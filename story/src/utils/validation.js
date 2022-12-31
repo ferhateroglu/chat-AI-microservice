@@ -3,7 +3,8 @@ const Joi = require("joi");
 exports.addStorySchema = Joi.object().keys({
   title: Joi.string().required(),
   body: Joi.string().required(),
-  fileKey: Joi.string().required()
+  fileKey: Joi.string().required(),
+  image: Joi.string().required(),
 });
 
 exports.getAllStoriesScema = Joi.object().keys({

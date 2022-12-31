@@ -12,7 +12,7 @@ module.exports = (whiteList) => {
           }
         }
       }
-      allowed ? next() : res.status(403).json({ msg: "NO_PERMISSION" });
+      allowed ? next() : res.status(403).json({ message: "NO_PERMISSION" });
     } catch (err) {
       next(err);
     }

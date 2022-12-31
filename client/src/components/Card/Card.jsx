@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import "./Card.scss"
-const Card = ({post}) => {
+const Card = ({post, handleLike}) => {
     return (<>
         <div className="card col-4">
             <div className="head">
@@ -13,8 +13,8 @@ const Card = ({post}) => {
                     <span className='tag'>example2</span>
                     <span className='tag'>tag1</span>
                 </div>
-                <div className='like'>
-                    <i class='bx bx-heart'></i>
+                <div onClick={handleLike} data-key={post._id} className='like'>
+                    <i data-key={post._id} className='bx bx-heart'></i>
                 </div>
                 </div>
                 <div className='title'>{post.title}</div>

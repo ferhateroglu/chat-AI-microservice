@@ -8,8 +8,10 @@ module.exports = (app) => {
         console.log("===============  Account Service Received Event ====== ");
         try{
             const { payload } = req.body;
-            const {message,statusCode} = await service.SubscribeEvents(payload);
-            return res.status(200).json({message, statusCode});
+
+            service.SubscribeEvents(payload);
+            
+            return res.status(200).json({message:"OK"});
         }catch(err){
             next(err)
         }        

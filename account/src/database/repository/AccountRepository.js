@@ -8,14 +8,14 @@ const {
 // DB operations
 
 class AccountRepository {
-  async createUser({ email, password, phone, salt, username }) {
+  async createUser({ email, password, salt, username, score }) {
     try {
       const user = new UserModel({
         email,
         password,
         salt,
-        phone,
         username,
+        score
       });
       const userResult = await user.save();
       return userResult;
@@ -50,10 +50,9 @@ class AccountRepository {
       throw err;
     }
   }
-
-  async addLike({story,user}){
+  async addLike({story,userId}){
     try {
-        const responseUser = await UserModel.findById(user._id);
+        const responseUser = await UserModel.findById(userId);
         const {likes} = JSON.parse(JSON.stringify(responseUser));
         let isAlredyLiked = false
         for(let like of likes){
@@ -62,13 +61,10 @@ class AccountRepository {
             break;
           }
         }
-        if(isAlredyLiked){
-          return null
+        if(!isAlredyLiked){
+          responseUser.likes.push({...story})
+          await responseUser.save()
         }
-        responseUser.likes.push({...story})
-        await responseUser.save()
-        console.log(responseUser)
-        return responseUser;
       } catch (err) {
         throw err;
       }
@@ -89,12 +85,29 @@ class AccountRepository {
         }
         responseUser.likes.pull({_id:_id})
         await responseUser.save()
-        console.log(responseUser)
         return responseUser;
       } catch (err) {
         throw err;
       }
   }
+  async getLikedStories({user}){
+    try {
+        const responseUser = await UserModel.findById(user._id);
+        const {likes} = JSON.parse(JSON.stringify(responseUser));
+        return likes;
+      } catch (err) {
+        throw err;
+      }
+  }
+  async getLeaderBoard(){
+    try {
+        const users = await UserModel.find({}).sort({score: -1}).limit(5).select(["username","score"])
+        return users;
+      } catch (err) {
+        throw err;
+      }
+  }
+
 }
 
 module.exports = AccountRepository;

@@ -3,7 +3,6 @@ import {AuthContext} from "../../context/authContext"
 import "./TopBar.scss";
 const TopBar = () => {
   const {currentUser} = useContext(AuthContext)
-  console.log(currentUser)
   return (
     <div className='top-bar'>
       <div className='search'>
@@ -13,7 +12,7 @@ const TopBar = () => {
       <div className="profile">
 
         <img src={"http://localhost:8080/story/file/1672428890482-profile.jpeg"} alt="" />
-        <span>Jane</span>
+        <span>{currentUser.username}</span>
         <i className='bx bx-world'></i>
         <i className='bx bx-sun icon sun'></i>
       </div>

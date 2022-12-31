@@ -1,0 +1,11 @@
+.likePage {
+  top: 100px;
+  padding: 0.5em 1em;
+  left: 115px;
+  width: calc(100% - 125px);
+  flex-wrap: wrap;
+  position: absolute;
+  transition: var(--tran-05);
+  .row {
+  }
+}

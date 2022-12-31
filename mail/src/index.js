@@ -10,7 +10,7 @@ const startServer = async () => {
   await expressApp(app);
 
   app.listen(PORT, () => {
-      console.log("account listening to port: " + PORT);
+      console.log("Mail listening to port: " + PORT);
     })
     .on("error", (err) => {
       console.log(err);

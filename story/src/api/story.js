@@ -66,6 +66,7 @@ module.exports = (app) => {
   // upload file to s3
   app.post("/audio", uploadS3("file"), async (req, res, next) => {
     try {
+      console.log(req.file)
       return res.send(req.file);
     } catch (err) {
       next(err);
